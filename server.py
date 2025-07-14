@@ -1,3 +1,9 @@
+''' 
+Initiates the Emotion Detection application
+to be executed over the Flask channel and 
+deployed on localhost:5000.
+'''
+
 # Import Flask, render_template, request from the flask framework package
 from flask import Flask, render_template, request
 
@@ -9,7 +15,12 @@ app = Flask("Emotion Detector")
 
 @app.route("/emotionDetector")
 def sent_analyzer():
-
+    ''' 
+    Receives the text from the HTML interface and 
+    runs emotion detection on it using the emotion_detector() function. 
+    The output returned shows a list of emotions detected along with their score,
+    and a summary of the dominant emotion detected in the text supplied.
+    '''
     # Retrieve the text to analyze from the request arguments
     text_to_analyze = request.args.get('textToAnalyze')
 
@@ -44,6 +55,9 @@ def sent_analyzer():
 
 @app.route("/")
 def render_index_page():
+    '''
+    Renders the HTML index page of the web app
+    '''
     return render_template('index.html')
 
 if __name__ == "__main__":
