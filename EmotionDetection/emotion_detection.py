@@ -15,24 +15,37 @@ def emotion_detector(text_to_analyse):
     # Sending a POST request to the emotion detection API
     response = requests.post(url, json=payload, headers=headers)
 
-    #Convert the response text into a dictionary using the json library functions
-    data = json.loads(response.text)
+    # If the response status code is 200, extract the data from the response
+    if response.status_code == 200:
+        #Convert the response text into a dictionary using the json library functions
+        data = json.loads(response.text)
 
-    # Get the predicted emotions from the JSON
-    emotions = data['emotionPredictions'][0]['emotion']
+        # Get the predicted emotions from the JSON
+        emotions = data['emotionPredictions'][0]['emotion']
 
-    # Get the max. value and corresponding key for the dominant emotion
-    dominant = max(emotions, key=emotions.get)
+        # Get the max. value and corresponding key for the dominant emotion
+        dominant = max(emotions, key=emotions.get)
 
-    # Sort the emotions alphabetically by key for output
-    emotions_sorted = dict(sorted(emotions.items()))
+        # Sort the emotions alphabetically by key for output
+        emotions_sorted = dict(sorted(emotions.items()))
 
-    # Use ** to flatten the emotions dict,
-    # then add the dominant emotion to the result to be output
-    result = {
-        **emotions_sorted,
-        'dominant_emotion': dominant
-    }
+        # Use ** to flatten the emotions dict,
+        # then add the dominant emotion to the result to be output
+        result = {
+            **emotions_sorted,
+            'dominant_emotion': dominant
+        }
 
-    # Return a dictionary containing emotions results
+    # If the response status code is 400, make an empty object
+    elif response.status_code == 400:
+        result =     {
+            "anger": None, 
+            "disgust": None, 
+            "fear": None, 
+            "joy": None, 
+            "sadness": None, 
+            "dominant_emotion": None
+        }
+
+    # Return a dictionary of emotion detection results
     return result

@@ -21,6 +21,10 @@ def sent_analyzer():
     # get the value of the dominant emotion separately
     dominant = response['dominant_emotion']
 
+    # Check if the dominant emotion is None, indicating an error or invalid input
+    if dominant is None:
+        return "Invalid input! Try again."
+
     # Start the result string
     result = "For the given statement, the system response is "
 
