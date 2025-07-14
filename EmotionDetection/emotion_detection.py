@@ -15,8 +15,19 @@ def emotion_detector(text_to_analyse):
     # Sending a POST request to the emotion detection API
     response = requests.post(url, json=payload, headers=headers)
 
-    # If the response status code is 200, extract the data from the response
-    if response.status_code == 200:
+    # If the response status code is 400, make an empty object
+    if response.status_code == 400:
+        result =     {
+            "anger": None, 
+            "disgust": None, 
+            "fear": None, 
+            "joy": None, 
+            "sadness": None, 
+            "dominant_emotion": None
+        }    
+
+    # Otherwise extract the data from the response
+    else:
         #Convert the response text into a dictionary using the json library functions
         data = json.loads(response.text)
 
@@ -36,16 +47,6 @@ def emotion_detector(text_to_analyse):
             'dominant_emotion': dominant
         }
 
-    # If the response status code is 400, make an empty object
-    elif response.status_code == 400:
-        result =     {
-            "anger": None, 
-            "disgust": None, 
-            "fear": None, 
-            "joy": None, 
-            "sadness": None, 
-            "dominant_emotion": None
-        }
 
     # Return a dictionary of emotion detection results
     return result
